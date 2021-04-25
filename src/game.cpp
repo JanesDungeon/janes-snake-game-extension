@@ -16,6 +16,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_start;
   Uint32 frame_end;
   Uint32 frame_duration;
+  poison_time = rand() % 1 + 2;
+  
   int frame_count = 0;
   bool running = true;
 
@@ -23,10 +25,14 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, snake);
+    controller.HandleInput(running, snake, ate_poison);
     Update();
-    renderer.Render(snake, food);
-
+    if(is_poison){
+      renderer.Render(snake, poison, is_poison);
+    } else {
+      renderer.Render(snake, food, is_poison);
+    }
+    
     frame_end = SDL_GetTicks();
 
     // Keep track of how long each loop through the input/update/render cycle
@@ -55,14 +61,37 @@ void Game::PlaceFood() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    // Check that the location is not occupied by a snake item before placing
-    // food.
-    if (!snake.SnakeCell(x, y)) {
+
+    if (!snake.SnakeCell(x, y) && x != poison.x && y != poison.y) {
       food.x = x;
       food.y = y;
       return;
     }
   }
+}
+
+void Game::PlacePoison() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+
+    if (!snake.SnakeCell(x, y) && x!=food.x && y!=food.y) {
+      poison.x = x;
+      poison.y = y;
+      return;
+    }
+  }
+}
+
+void Game::HideFood() {
+  food.x = -1;
+  food.y = -1;
+}
+
+void Game::HidePoison() {
+  poison.x = -1;
+  poison.y = -1;
 }
 
 void Game::Update() {
@@ -73,15 +102,39 @@ void Game::Update() {
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
 
-  // Check if there's food over here
+  // Check if there's food over here 
   if (food.x == new_x && food.y == new_y) {
+    food_count++;
+
+    // randomly place poison instead of food
+    if (food_count >= poison_time) {
+      score++;
+      is_poison = true;
+
+      HideFood();
+      PlacePoison();
+      poison_time = rand() % 1 + 5;
+      food_count = 0;
+    } else {
+      ate_poison = false;
+
+      score++;
+      PlaceFood();
+      snake.GrowBody();
+      snake.speed += 0.005; //0.02
+    }
+
+  }  //check if there's poison over there
+  else if (poison.x == new_x && poison.y == new_y) {
+    ate_poison = true;
+    is_poison = false;
+
     score++;
+    HidePoison();
     PlaceFood();
-    // Grow snake and increase speed.
-    snake.GrowBody();
-    snake.speed += 0.02;
   }
 }
+
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }

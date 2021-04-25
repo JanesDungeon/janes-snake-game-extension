@@ -17,6 +17,7 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
+  SDL_Point poison;
 
   std::random_device dev;
   std::mt19937 engine;
@@ -27,6 +28,15 @@ class Game {
 
   void PlaceFood();
   void Update();
-};
+
+  void PlacePoison();
+  void HidePoison();
+  void HideFood();
+
+  bool is_poison{false};
+  bool ate_poison{false};
+  int food_count{0};
+  int poison_time{0};
+  };
 
 #endif
