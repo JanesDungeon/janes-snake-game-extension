@@ -1,5 +1,5 @@
 # CPPND: Capstone Snake Game Example
-This wicked Snake Game extension generates a poisonous fruit on a random basis. Once the fruit is eaten, the snake's directions are twisted to the opposite! Careful! Up is Down and Left is right. The wickedness will end as soon as the next normal food item is cought.
+This wicked Snake Game extension generates a poisonous fruit on a random basis. Once the fruit is eaten, the snake's directions are twisted to the opposite! Careful! Up is down and left is right. The wickedness will end as soon as the next normal food item is cought.
 
 On behalf of the Capstone Project Rubric, following requirements were fulfilled:
 (Loops/Functions/I/O):
