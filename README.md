@@ -1,16 +1,6 @@
 # CPPND: Capstone Snake Game Example
 This wicked Snake Game extension generates a poisonous fruit on a random basis. Once the fruit is eaten, the snake's directions are twisted to the opposite! Careful! Up is down and left is right. The wickedness will end as soon as the next normal food item is cought.
 
-On behalf of the Capstone Project Rubric, following requirements were fulfilled:
-(Loops/Functions/I/O):
-- variety of control structures and functions : implemented new functions and extended existing functions eg. in game.h/game.cpp
-- I/O input in the controller.h/controller.cpp
-- explicit access specifiers in classes
-- member initialization lists (eg game.h Constructor)
-- classes encapsulate behavior: snake object in game class
-- the project makes use of function references in function declarations (eg. renderer.h)
-
-
 <img src="snake_game.gif"/>
 
 
